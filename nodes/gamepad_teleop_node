@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 import rospy
 from std_msgs.msg import Empty, UInt8, Bool
 from sensor_msgs.msg import Joy
@@ -31,73 +31,30 @@ class GamepadState:
         self.LT = 0.  # 1.0: idle, -1.0: depressed
         self.RT = 0.  # 1.0: idle, -1.0: depressed
 
-    def parse_ps3_usb(self, msg):
+
+    def parse(self,msg):
+        err = None
+        try:
+            return self.parse_ps5_usb(msg)
+        except ValueError as e:
+            err = e
+        raise err
+    
+    def parse_ps5_usb(self, msg):
+        # Validate the number of buttons and axes for a PS5 controller
         if len(msg.buttons) != 17 or len(msg.axes) != 6:
             raise ValueError('Invalid number of buttons (%d) or axes (%d)' % (
                 len(msg.buttons), len(msg.axes)))
-        self.Cr = msg.buttons[0]
-        self.Ci = msg.buttons[1]
-        self.Tr = msg.buttons[2]
-        self.Sq = msg.buttons[3]
-        self.L1 = msg.buttons[4]
-        self.R1 = msg.buttons[5]
-        self.L2 = msg.buttons[6]
-        self.R2 = msg.buttons[7]
-        self.Select = msg.buttons[8]
-        self.Start = msg.buttons[9]
-        self.Sync = msg.buttons[10]
-        self.L3 = msg.buttons[11]
-        self.R3 = msg.buttons[12]
-        self.DU = msg.buttons[13]
-        self.DD = msg.buttons[14]
-        self.DL = msg.buttons[15]
-        self.DR = msg.buttons[16]
-        self.LX = msg.axes[0]
-        self.LY = msg.axes[1]
-        self.LT = msg.axes[2]
-        self.RX = msg.axes[3]
-        self.RY = msg.axes[4]
-        self.RT = msg.axes[5]
 
-    def parse_ps3_usb2(self, msg):
-        if len(msg.buttons) != 19 or len(msg.axes) != 27:
-            raise ValueError('Invalid number of buttons (%d) or axes (%d)' % (
-                len(msg.buttons), len(msg.axes)))
-        self.Select = msg.buttons[0]
-        self.L3 = msg.buttons[1]
-        self.R3 = msg.buttons[2]
-        self.Start = msg.buttons[3]
-        self.DU = msg.buttons[4]
-        self.DR = msg.buttons[5]
-        self.DD = msg.buttons[6]
-        self.DL = msg.buttons[7]
-        self.L2 = msg.buttons[8]
-        self.R2 = msg.buttons[9]
-        self.L1 = msg.buttons[10]
-        self.R1 = msg.buttons[11]
-        self.Tr = msg.buttons[12]
-        self.Ci = msg.buttons[13]
-        self.Cr = msg.buttons[14]
-        self.Sq = msg.buttons[15]
-        self.Sync = msg.buttons[16]
-        self.LX = msg.axes[0]
-        self.LY = msg.axes[1]
-        self.LT = msg.axes[12]
-        self.RX = msg.axes[2]
-        self.RY = msg.axes[3]
-        self.RT = msg.axes[13]
+        # Button mappings for PS5 DualSense controller
 
-    def parse(self, msg):
-        err = None
-        try:
-            return self.parse_ps3_usb(msg)
-        except ValueError, e:
-            err = e
-        try:
-            return self.parse_ps3_usb2(msg)
-        except ValueError, e:
-            err = e
-        raise err
+        self.LX = msg.axes[0]  # Left stick horizontal
+        self.LY = msg.axes[1]  # Left stick vertical
+        self.LT = msg.axes[4]  # Left trigger axis
+        self.RX = msg.axes[2]  # Right stick horizontal
+        self.RY = msg.axes[3]  # Right stick vertical
+        self.RT = msg.axes[5]  # Right trigger axis
+
 
 
 class GamepadTeleopNode:
