@@ -1,2 +1,2 @@
-
--DCATKIN_DEVEL_PREFIX=/home/cc/ee106a/fa24/class/ee106a-acz/ros_workspaces/project/devel -DCMAKE_INSTALL_PREFIX=/home/cc/ee106a/fa24/class/ee106a-acz/ros_workspaces/project/install -G Unix Makefiles
+camera_info_manager_py:tello_driver
+-DCATKIN_DEVEL_PREFIX=/home/cc/ee106a/fa24/class/ee106a-acz/project/devel -DCMAKE_INSTALL_PREFIX=/home/cc/ee106a/fa24/class/ee106a-acz/project/install -G Unix Makefiles
