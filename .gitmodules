@@ -1,6 +1,6 @@
 [submodule "tello_driver"]
 	path = tello_driver
-	url = https://github.com/appie-17/tello_driver.git
+	url = https://github.com/jacobisdab/tello_driver.git
 [submodule "camera_info_manager_py"]
 	path = camera_info_manager_py
-	url = https://github.com/ros-perception/camera_info_manager_py.git
+	url = https://github.com/jacobisdab/camera_info_manager_py.git
